@@ -4,29 +4,15 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRoute = require("./routes/auth");
 const cors = require('cors')
-const rateLimit = require('express-rate-limit')
-
-// const limit = rateLimit({
-//   max: 10,
-//   windowMs: 1000,
-// })
 
 app.use(cors())
 dotenv.config();
 app.use(express.json());
 
-// app.use('api/login', limit)
-
 mongoose
-  .connect(process.env.MONGO_URL, (err, db) => {
-    // const collection = db.collection("data")
-    // collection.find().toArray((err, d) => {
-    //   console.log(d);
-    // })
-    if (!err) {
-      console.log('connected');
-    }
-  })
+  .connect(process.env.MONGO_URL)
+  .then(() => console.log("Connected"))
+  .catch(err => console.log(err))
 
 app.use("/api", authRoute);
 
