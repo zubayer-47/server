@@ -3,19 +3,6 @@ const bcrypt = require("bcrypt");
 const Data = require("../models/Data");
 const User = require("../models/User");
 
-router.get("/home/:search", async (req, res) => {
-  console.log(req.params.search);
-  try {
-    const strMeal = req.params.search;
-    const res = await Data.find({
-      strMeal: { $regex: new RegExp("^" + strMeal, "i") },
-    }).exec();
-    res.json(res);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
 router.get("/data", async (req, res) => {
   try {
     const data = await Data.find();
@@ -64,5 +51,17 @@ router.post("/register", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+// get single data
+router.get('/:id', (req, res) => {
+  const id = req.params.id
+  try {
+    const data = Data.findById(id)
+
+    res.status(200).json(data)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+})
 
 module.exports = router;
